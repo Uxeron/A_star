@@ -28,7 +28,7 @@ int main() {
 
     if(debug) cout << "allocating memory for node grid" << endl;
 
-    vector< vector<bool> > walls (WIDTH, vector<bool>(HEIGHT, false));
+    vector< vector<char> > walls (WIDTH, vector<char>(HEIGHT, false));
 
     if(debug) cout << "parsing map file" << endl;
 
@@ -47,7 +47,7 @@ int main() {
     if(debug) cout << "Finding path" << endl;
 
     initAStar(WIDTH, HEIGHT);
-    AStar(&path, walls, start, finish);
+    AStar(path, walls, start, finish);
     if(debug) cout << endl;
     if(debug) cout << "Path length - " << path.size() << endl;
 
