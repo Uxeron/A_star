@@ -44,6 +44,7 @@ void AStar(vector< pair<int, int> >* path, vector< vector<bool> > walls, pair<in
     pair<int, int> position;
     int WIDTH  = grid.size();
     int HEIGHT = grid[0].size();
+    vector< vector<bool> > inQueue(WIDTH, vector<bool>(HEIGHT, false));
 
     Node startNode;
     Node* currentNode;
@@ -77,9 +78,9 @@ void AStar(vector< pair<int, int> >* path, vector< vector<bool> > walls, pair<in
             if(grid[posx][posy] == NULL) grid[posx][posy] = new Node;
             neighbourNode = grid[posx][posy];
 
-            if(!(*neighbourNode).inQueue) {
+            if(!inQueue[posx][posy]) {
                 (*neighbourNode).position = {posx, posy};
-                (*neighbourNode).inQueue = true;
+                inQueue[posx][posy] = true;
                 nodeQueue.push(neighbourNode);
             }
 

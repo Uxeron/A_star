@@ -7,7 +7,6 @@
     #include <vector>
 
     struct Node {
-        bool inQueue = false;
         Node* cameFrom;
         std::pair<int, int> position;
         float gScore = FLOAT_MAX;
