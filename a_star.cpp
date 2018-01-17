@@ -6,12 +6,6 @@ using namespace std;
 
 #define NULL nullptr
 
-struct NodeCompare {
-    bool operator() (Node*& n1, Node*& n2) {
-        return (*n1).fScore > (*n2).fScore;
-    }
-};
-
 vector< vector<Node*> > grid;
 forward_list<Node*>::iterator it1;
 forward_list<Node*>::iterator it2;
