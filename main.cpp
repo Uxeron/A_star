@@ -85,7 +85,7 @@ void outputPath(vector< pair<int, int> > path, int WIDTH, int HEIGHT) {
             inpChar[path[index].first] = '*';
             index++;
         }
-        fr << inpChar << "\n";
+        fr << inpChar << "\r\n";
     }
     fd.close();
     fr.close();

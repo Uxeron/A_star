@@ -9,6 +9,7 @@ using namespace std;
 vector< vector<Node*> > grid;
 forward_list<Node*>::iterator it1;
 forward_list<Node*>::iterator it2;
+const float sqr2 = sqrt(2);
 
 float costEstimate(pair<int, int> start, pair<int, int> finish);
 void  reconstructPath(Node lastNode, vector< pair<int, int> >* path);
@@ -19,7 +20,9 @@ void initAStar(int WIDTH, int HEIGHT) {
 }
 
 float costEstimate(pair<int, int> start, pair<int, int> finish) {
-    return sqrt(pow(start.first-finish.first, 2) + pow(start.second-finish.second, 2));
+    int dist1 = start.first-finish.first;
+    int dist2 = start.second-finish.second;
+    return min(dist1, dist2)*sqr2 + abs(dist1-dist2);
 }
 
 void reconstructPath(Node* lastNode, vector< pair<int, int> > &path) {
@@ -43,7 +46,6 @@ void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<in
     pair<int, int> offset[8] = {{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}};
     forward_list<Node*> nodeQueue;
     float tempGScore;
-    const float sqr2 = sqrt(2);
     int posx, posy;
     pair<int, int> position;
     int WIDTH  = grid.size();
