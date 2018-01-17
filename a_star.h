@@ -7,13 +7,13 @@
     #include <vector>
 
     struct Node {
-        bool checked = false;
         bool inQueue = false;
-        Node *cameFrom;
+        Node* cameFrom;
         std::pair<int, int> position;
         float gScore = FLOAT_MAX;
         float fScore = FLOAT_MAX;
     };
 
-    void AStar(std::vector< std::pair<int, int> >* path, std::vector< std::vector<Node> > grid, std::pair<int, int> start, std::pair<int, int> finish);
+    void AStar(std::vector< std::pair<int, int> >* path, std::vector< std::vector<bool> > walls, std::pair<int, int> start, std::pair<int, int> finish);
+    void initAStar(int WIDTH, int HEIGHT);
 #endif

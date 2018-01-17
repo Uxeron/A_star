@@ -28,7 +28,7 @@ int main() {
 
     if(debug) cout << "allocating memory for node grid" << endl;
 
-    vector< vector<Node> > grid (WIDTH, vector<Node>(HEIGHT));
+    vector< vector<bool> > walls (WIDTH, vector<bool>(HEIGHT, false));
 
     if(debug) cout << "parsing map file" << endl;
 
@@ -37,7 +37,7 @@ int main() {
         fd >> inputStr;
         for(int j = 0; j < WIDTH; j++) {
             if(inputStr[j] != '.') {
-                grid[j][i].checked = true;
+                walls[j][i] = true;
             }
         }
         fd.ignore();
@@ -46,7 +46,8 @@ int main() {
 
     if(debug) cout << "Finding path" << endl;
 
-    AStar(&path, grid, start, finish);
+    initAStar(WIDTH, HEIGHT);
+    AStar(&path, walls, start, finish);
     if(debug) cout << endl;
     if(debug) cout << "Path length - " << path.size() << endl;
 
@@ -84,7 +85,7 @@ void outputPath(vector< pair<int, int> > path, int WIDTH, int HEIGHT) {
             inpChar[path[index].first] = '*';
             index++;
         }
-        fr << inpChar << "\r\n";
+        fr << inpChar << "\n";
     }
     fd.close();
     fr.close();

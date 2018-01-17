@@ -12,14 +12,19 @@ struct NodeCompare {
     }
 };
 
+vector< vector<Node*> > grid;
+
 float costEstimate(pair<int, int> start, pair<int, int> finish);
 void  reconstructPath(Node lastNode, vector< pair<int, int> >* path);
 
 
+void initAStar(int WIDTH, int HEIGHT) {
+    grid = vector< vector<Node*> > (WIDTH, vector<Node*>(HEIGHT));
+}
+
 float costEstimate(pair<int, int> start, pair<int, int> finish) {
     return sqrt(pow(start.first-finish.first, 2) + pow(start.second-finish.second, 2));
 }
-
 
 void reconstructPath(Node* lastNode, vector< pair<int, int> >* path) {
     while((*lastNode).cameFrom != NULL) {
@@ -30,8 +35,7 @@ void reconstructPath(Node* lastNode, vector< pair<int, int> >* path) {
     (*path) = vector< pair<int, int> > ((*path).rbegin(), (*path).rend());
 }
 
-
-void AStar(vector< pair<int, int> >* path, vector< vector<Node> > grid, pair<int, int> start, pair<int, int> finish) {
+void AStar(vector< pair<int, int> >* path, vector< vector<bool> > walls, pair<int, int> start, pair<int, int> finish) {
     pair<int, int> offset[8] = {{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}};
     priority_queue<Node*, vector<Node*>, NodeCompare> nodeQueue;
     float tempGScore;
@@ -49,7 +53,7 @@ void AStar(vector< pair<int, int> >* path, vector< vector<Node> > grid, pair<int
     startNode.cameFrom = NULL;
     startNode.gScore = 0.0;
     startNode.fScore = costEstimate(start, finish);
-    grid[start.first][start.second] = startNode;
+    grid[start.first][start.second] = &startNode;
 
     nodeQueue.push(&startNode);
 
@@ -57,7 +61,7 @@ void AStar(vector< pair<int, int> >* path, vector< vector<Node> > grid, pair<int
         currentNode = nodeQueue.top();
         position = (*currentNode).position;
         nodeQueue.pop();
-        (*currentNode).checked = true;
+        walls[position.first][position.second] = true;
 
         if(finish == position) {
             reconstructPath(currentNode, path);
@@ -69,8 +73,9 @@ void AStar(vector< pair<int, int> >* path, vector< vector<Node> > grid, pair<int
             posy = position.second + offset[i].second;
             if(posx < 0 || posx >= WIDTH || posy < 0 || posy >= HEIGHT) continue;
 
-            neighbourNode = &(grid[posx][posy]);
-            if((*neighbourNode).checked) continue;
+            if(walls[posx][posy]) continue;
+            if(grid[posx][posy] == NULL) grid[posx][posy] = new Node;
+            neighbourNode = grid[posx][posy];
 
             if(!(*neighbourNode).inQueue) {
                 (*neighbourNode).position = {posx, posy};
