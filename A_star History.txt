@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  A*v1
   ||  +24.6% CPU time   (1.97s vs 1.58s)
   ||  -39.2% RAM usage  (117MB vs 193MB)
@@ -17,4 +18,25 @@
   ||   -7.0% CPU time   (1.47s vs 1.58s)
   ||  -49.2% RAM usage  ( 98MB vs 193MB)
   \/
+=======
+ A*v1
+  ||  +24.6% CPU time   (1.97s vs 1.58s)
+  ||  -39.2% RAM usage  (117MB vs 193MB)
+  \/
+ A*v2
+  ||  +10.7% CPU time   (2.18s vs 1.97s)
+  ||  -23.0% RAM usage  ( 90MB vs 117MB)
+  \/
+ A*v3
+  ||  -32.6% CPU time   (1.47s vs 2.18s)
+  ||   +8.9% RAM usage  ( 98MB vs 90MB)
+  \/
+ A*v4
+ 
+ Overall
+ A*v1
+  ||   -7.0% CPU time   (1.47s vs 1.58s)
+  ||  -49.2% RAM usage  ( 98MB vs 193MB)
+  \/
+>>>>>>> f1984a6be098156e3bd925e41b420893f8765c3a
  A*v4
