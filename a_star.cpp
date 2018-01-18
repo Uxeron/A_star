@@ -32,6 +32,16 @@ void reconstructPath(Node* lastNode, vector< pair<int, int> > &path) {
         lastNode = (*lastNode).cameFrom;
     }
     path.push_back((*lastNode).position);
+
+    for(int i = 0; i < WIDTH; i++) {
+        for(int j = 0; j < HEIGHT; j++) {
+            if(grid[i][j] != NULL) {
+                delete grid[i][j];
+                grid[i][j] = NULL;
+            }
+        }
+    }
+
 }
 
 void insertNode(list<Node*> &nodeQueue, Node* node) {
@@ -48,17 +58,17 @@ void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<in
     int posx, posy;
     pair<int, int> position;
 
-    Node startNode;
+    Node* startNode = new Node;
     Node* currentNode;
     Node* neighbourNode;
 
-    startNode.position = start;
-    startNode.cameFrom = NULL;
-    startNode.gScore = 0.0;
-    startNode.fScore = costEstimate(start, finish);
-    grid[start.first][start.second] = &startNode;
+    (*startNode).position = start;
+    (*startNode).cameFrom = NULL;
+    (*startNode).gScore = 0.0;
+    (*startNode).fScore = costEstimate(start, finish);
+    grid[start.first][start.second] = startNode;
 
-    nodeQueue.push_front(&startNode);
+    nodeQueue.push_front(startNode);
 
     while(!nodeQueue.empty()) {
         currentNode = nodeQueue.front();
