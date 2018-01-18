@@ -1,4 +1,4 @@
-#include <forward_list>
+#include <list>
 #include <cmath>
 #include "a_star.h"
 
@@ -7,13 +7,12 @@ using namespace std;
 #define NULL nullptr
 
 vector< vector<Node*> > grid;
-forward_list<Node*>::iterator it1;
-forward_list<Node*>::iterator it2;
+list<Node*>::iterator it1;
 const float sqr2 = sqrt(2);
 
 float costEstimate(pair<int, int> start, pair<int, int> finish);
 void  reconstructPath(Node lastNode, vector< pair<int, int> >* path);
-void  insertNode(forward_list<Node*> &nodeQueue, Node* node);
+void  insertNode(list<Node*> &nodeQueue, Node* node);
 
 void initAStar(int WIDTH, int HEIGHT) {
     grid = vector< vector<Node*> > (WIDTH, vector<Node*>(HEIGHT));
@@ -34,17 +33,15 @@ void reconstructPath(Node* lastNode, vector< pair<int, int> > &path) {
     path = vector< pair<int, int> > (path.rbegin(), path.rend());
 }
 
-void insertNode(forward_list<Node*> &nodeQueue, Node* node) {
-    it2 = nodeQueue.before_begin();
+void insertNode(list<Node*> &nodeQueue, Node* node) {
     int nodeFscore = (*node).fScore;
-    if(!nodeQueue.empty())
-        for(it1 = nodeQueue.begin(); it1 != nodeQueue.end() && (**it1).fScore > nodeFscore; it2 = it1, ++it1) {}
-    nodeQueue.insert_after(it2, node);
+    for(it1 = nodeQueue.begin(); it1 != nodeQueue.end() && (**it1).fScore > nodeFscore; ++it1) {}
+    nodeQueue.insert(it1, node);
 }
 
 void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<int, int> start, pair<int, int> finish) {
     pair<int, int> offset[8] = {{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}};
-    forward_list<Node*> nodeQueue;
+    list<Node*> nodeQueue;
     float tempGScore;
     int posx, posy;
     pair<int, int> position;
