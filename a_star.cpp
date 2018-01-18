@@ -9,12 +9,14 @@ using namespace std;
 vector< vector<Node*> > grid;
 list<Node*>::iterator it1;
 const float sqr2 = sqrt(2);
+int WIDTH, HEIGHT;
 
 float costEstimate(pair<int, int> start, pair<int, int> finish);
 void  reconstructPath(Node lastNode, vector< pair<int, int> >* path);
 void  insertNode(list<Node*> &nodeQueue, Node* node);
 
-void initAStar(int WIDTH, int HEIGHT) {
+void initAStar(int w, int h) {
+    WIDTH = w; HEIGHT = h;
     grid = vector< vector<Node*> > (WIDTH, vector<Node*>(HEIGHT));
 }
 
@@ -30,7 +32,6 @@ void reconstructPath(Node* lastNode, vector< pair<int, int> > &path) {
         lastNode = (*lastNode).cameFrom;
     }
     path.push_back((*lastNode).position);
-    path = vector< pair<int, int> > (path.rbegin(), path.rend());
 }
 
 void insertNode(list<Node*> &nodeQueue, Node* node) {
@@ -39,15 +40,13 @@ void insertNode(list<Node*> &nodeQueue, Node* node) {
     nodeQueue.insert(it1, node);
 }
 
-void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<int, int> start, pair<int, int> finish) {
+void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<int, int> finish, pair<int, int> start) {
     pair<int, int> offset[8] = {{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}};
+    vector< vector<char> > inQueue(WIDTH, vector<char>(HEIGHT, false));
     list<Node*> nodeQueue;
     float tempGScore;
     int posx, posy;
     pair<int, int> position;
-    int WIDTH  = grid.size();
-    int HEIGHT = grid[0].size();
-    vector< vector<char> > inQueue(WIDTH, vector<char>(HEIGHT, false));
 
     Node startNode;
     Node* currentNode;
