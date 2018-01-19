@@ -6,7 +6,6 @@ using namespace std;
 
 #define NULL nullptr
 
-vector< vector<Node*> > grid;
 list<Node*>::iterator it1;
 const float sqr2 = sqrt(2);
 int WIDTH, HEIGHT;
@@ -14,11 +13,7 @@ int WIDTH, HEIGHT;
 float costEstimate(pair<int, int> start, pair<int, int> finish);
 void  reconstructPath(Node lastNode, vector< pair<int, int> >* path);
 void  insertNode(list<Node*> &nodeQueue, Node* node);
-
-void initAStar(int w, int h) {
-    WIDTH = w; HEIGHT = h;
-    grid = vector< vector<Node*> > (WIDTH, vector<Node*>(HEIGHT));
-}
+void  cleanup(vector< vector<Node*> > &grid);
 
 float costEstimate(pair<int, int> start, pair<int, int> finish) {
     int dist1 = start.first-finish.first;
@@ -32,16 +27,6 @@ void reconstructPath(Node* lastNode, vector< pair<int, int> > &path) {
         lastNode = (*lastNode).cameFrom;
     }
     path.push_back((*lastNode).position);
-
-    for(int i = 0; i < WIDTH; i++) {
-        for(int j = 0; j < HEIGHT; j++) {
-            if(grid[i][j] != NULL) {
-                delete grid[i][j];
-                grid[i][j] = NULL;
-            }
-        }
-    }
-
 }
 
 void insertNode(list<Node*> &nodeQueue, Node* node) {
@@ -50,8 +35,21 @@ void insertNode(list<Node*> &nodeQueue, Node* node) {
     nodeQueue.insert(it1, node);
 }
 
+void cleanup(vector< vector<Node*> > &grid) {
+    for(int i = 0; i < WIDTH; i++) {
+        for(int j = 0; j < HEIGHT; j++) {
+            if(grid[i][j] != NULL)
+                delete grid[i][j];
+        }
+    }
+}
+
 void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<int, int> finish, pair<int, int> start) {
     pair<int, int> offset[8] = {{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}};
+    WIDTH = walls.size();
+    HEIGHT = walls[0].size();
+
+    vector< vector<Node*> > grid (WIDTH, vector<Node*>(HEIGHT));
     vector< vector<char> > inQueue(WIDTH, vector<char>(HEIGHT, false));
     list<Node*> nodeQueue;
     float tempGScore;
@@ -78,6 +76,7 @@ void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<in
 
         if(finish == position) {
             reconstructPath(currentNode, path);
+            cleanup(grid);
             return;
         }
 

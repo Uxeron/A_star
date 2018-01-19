@@ -46,7 +46,6 @@ int main() {
 
     if(debug) cout << "Finding path" << endl;
 
-    initAStar(WIDTH, HEIGHT);
     AStar(path, walls, start, finish);
     if(debug) cout << endl;
     if(debug) cout << "Path length - " << path.size() << endl;

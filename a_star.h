@@ -14,5 +14,4 @@
     };
 
     void AStar(std::vector< std::pair<int, int> > &path, std::vector< std::vector<char> > walls, std::pair<int, int> start, std::pair<int, int> finish);
-    void initAStar(int WIDTH, int HEIGHT);
 #endif
