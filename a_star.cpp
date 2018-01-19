@@ -1,4 +1,4 @@
-#include <list>
+#include <deque>
 #include <cmath>
 #include "a_star.h"
 
@@ -6,14 +6,20 @@ using namespace std;
 
 #define NULL nullptr
 
-list<Node*>::iterator it1;
+vector< vector<Node*> > grid;
+deque<Node*>::iterator it1;
 const float sqr2 = sqrt(2);
 int WIDTH, HEIGHT;
 
 float costEstimate(pair<int, int> start, pair<int, int> finish);
 void  reconstructPath(Node lastNode, vector< pair<int, int> >* path);
-void  insertNode(list<Node*> &nodeQueue, Node* node);
+void  insertNode(deque<Node*> &nodeQueue, Node* node);
 void  cleanup(vector< vector<Node*> > &grid);
+
+void initAStar(int w, int h) {
+    WIDTH = w; HEIGHT = h;
+    grid = vector< vector<Node*> > (WIDTH, vector<Node*>(HEIGHT));
+}
 
 float costEstimate(pair<int, int> start, pair<int, int> finish) {
     int dist1 = start.first-finish.first;
@@ -29,7 +35,7 @@ void reconstructPath(Node* lastNode, vector< pair<int, int> > &path) {
     path.push_back((*lastNode).position);
 }
 
-void insertNode(list<Node*> &nodeQueue, Node* node) {
+void insertNode(deque<Node*> &nodeQueue, Node* node) {
     int nodeFscore = (*node).fScore;
     for(it1 = nodeQueue.begin(); it1 != nodeQueue.end() && (**it1).fScore > nodeFscore; ++it1) {}
     nodeQueue.insert(it1, node);
@@ -38,20 +44,18 @@ void insertNode(list<Node*> &nodeQueue, Node* node) {
 void cleanup(vector< vector<Node*> > &grid) {
     for(int i = 0; i < WIDTH; i++) {
         for(int j = 0; j < HEIGHT; j++) {
-            if(grid[i][j] != NULL)
+            if(grid[i][j] != NULL) {
                 delete grid[i][j];
+                grid[i][j] = NULL;
+            }
         }
     }
 }
 
 void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<int, int> finish, pair<int, int> start) {
     pair<int, int> offset[8] = {{-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}};
-    WIDTH = walls.size();
-    HEIGHT = walls[0].size();
-
-    vector< vector<Node*> > grid (WIDTH, vector<Node*>(HEIGHT));
     vector< vector<char> > inQueue(WIDTH, vector<char>(HEIGHT, false));
-    list<Node*> nodeQueue;
+    deque<Node*> nodeQueue;
     float tempGScore;
     int posx, posy;
     pair<int, int> position;

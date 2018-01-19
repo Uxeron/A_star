@@ -5,8 +5,14 @@
 #include "a_star.h"
 
 #define debug 0
+#define test  1   //0 - long path; 1 - large amount of small paths
 
-#define inpFile "mapFile3.txt"
+#if test
+    #define inpFile "mapFile1.txt"
+#else
+    #define inpFile "mapFile3.txt"
+#endif
+
 #define outFile "mapFilePath.txt"
 
 using namespace std;
@@ -45,8 +51,15 @@ int main() {
     fd.close();
 
     if(debug) cout << "Finding path" << endl;
-
-    AStar(path, walls, start, finish);
+    initAStar(WIDTH, HEIGHT);
+    if(!test) {
+        AStar(path, walls, start, finish);
+    } else {
+        for(int i = 0; i < 5000; i++) {
+            AStar(path, walls, start, finish);
+            path.clear();
+        }
+    }
     if(debug) cout << endl;
     if(debug) cout << "Path length - " << path.size() << endl;
 
