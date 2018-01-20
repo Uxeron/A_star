@@ -5,7 +5,7 @@
 #include "a_star.h"
 
 #define debug 0
-#define test  1   //0 - long path; 1 - large amount of small paths
+#define test  0   //0 - long path; 1 - large amount of small paths
 
 #if test
     #define inpFile "mapFile1.txt"
@@ -59,6 +59,7 @@ int main() {
             AStar(path, walls, start, finish);
             path.clear();
         }
+        AStar(path, walls, start, finish);
     }
     if(debug) cout << endl;
     if(debug) cout << "Path length - " << path.size() << endl;

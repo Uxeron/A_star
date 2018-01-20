@@ -7,6 +7,7 @@ using namespace std;
 #define NULL nullptr
 
 vector< vector<Node*> > grid;
+deque<Node**> nodes;
 deque<Node*>::iterator it1;
 const float sqr2 = sqrt(2);
 int WIDTH, HEIGHT;
@@ -41,14 +42,11 @@ void insertNode(deque<Node*> &nodeQueue, Node* node) {
     nodeQueue.insert(it1, node);
 }
 
-void cleanup(vector< vector<Node*> > &grid) {
-    for(int i = 0; i < WIDTH; i++) {
-        for(int j = 0; j < HEIGHT; j++) {
-            if(grid[i][j] != NULL) {
-                delete grid[i][j];
-                grid[i][j] = NULL;
-            }
-        }
+void cleanup() {
+    while(!nodes.empty()) {
+        delete **nodes.begin();
+        **nodes.begin() = NULL;
+        nodes.pop_back();
     }
 }
 
@@ -80,7 +78,7 @@ void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<in
 
         if(finish == position) {
             reconstructPath(currentNode, path);
-            cleanup(grid);
+            cleanup();
             return;
         }
 
@@ -97,6 +95,7 @@ void AStar(vector< pair<int, int> > &path, vector< vector<char> > walls, pair<in
                 (*neighbourNode).position = {posx, posy};
                 inQueue[posx][posy] = true;
                 insertNode(nodeQueue, neighbourNode);
+                nodes.push_back(&grid[posx][posy]);
             }
 
             tempGScore = (*currentNode).gScore + (i%2==0 ? sqr2 : 1);
