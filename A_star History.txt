@@ -11,14 +11,18 @@
   ||   +8.9% RAM usage  ( 98MB vs 90MB)
   \/
  A*v4
-  ||  +13.6% CPU time   (1.67s vs 1.47s)
+  ||  +10.2% CPU time   (1.62s vs 1.47s)
   ||   -4.1% RAM usage  ( 94MB vs 98MB)
   \/  +Fixed memory leaking
  A*v5
+  ||   -9.3% CPU time   (1.33s vs 1.47s)
+  ||  +16.0% RAM usage  ( 109MB vs 94MB)
+  \/  +Improved short path performance by 18.1%
+ A*v6
 
  Overall
  A*v1
-  ||   +5.7% CPU time   (1.67s vs 1.58s)
-  ||  -51.3% RAM usage  ( 94MB vs 193MB)
+  ||  -15.2% CPU time   (1.33s vs 1.58s)
+  ||  -43.5% RAM usage  (109MB vs 193MB)
   \/
- A*v5
+ A*v6
